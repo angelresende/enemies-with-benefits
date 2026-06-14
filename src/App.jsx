@@ -20,7 +20,6 @@ function App() {
   const [selectedEpisode, setSelectedEpisode] = useState('All')
   const [activeVideo, setActiveVideo] = useState(null)
 
-  // Fetch videos from the backend API
   const fetchVideos = async () => {
     setLoading(true)
     setError(null)
@@ -43,7 +42,6 @@ function App() {
     fetchVideos()
   }, [])
 
-  // Helper to extract episode number from title (e.g. EP.7 -> "EP 7")
   const getEpisodeLabel = (title) => {
     const epMatch = title.match(/ep\.?\s*(\d+)/i)
     if (epMatch) return `EP ${epMatch[1]}`
@@ -51,13 +49,12 @@ function App() {
     return 'Outros'
   }
 
-  // Get list of unique episode labels for the filter tabs
   const getEpisodesList = () => {
     const eps = new Set()
     videos.forEach(v => {
       eps.add(getEpisodeLabel(v.title))
     })
-    // Sort episodes (Especial/Outros at the end, numerical desc)
+
     return ['All', ...Array.from(eps).sort((a, b) => {
       if (a === 'Especial') return 1
       if (b === 'Especial') return -1
@@ -69,14 +66,12 @@ function App() {
     })]
   }
 
-  // Filtered videos based on Search and Selected Episode Tab
   const filteredVideos = videos.filter(video => {
     const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesTab = selectedEpisode === 'All' || getEpisodeLabel(video.title) === selectedEpisode
     return matchesSearch && matchesTab
   })
 
-  // Format clean title for display (removes common tags to look premium)
   const cleanTitle = (title) => {
     return title
       .replace(/\[Eng\s*Sub\]/gi, '')
@@ -98,7 +93,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Background decoration */}
       <div className="bg-glow-1"></div>
       <div className="bg-glow-2"></div>
 
@@ -114,7 +108,7 @@ function App() {
               Enemies With <span>Benefits</span>
             </h1>
             <p className="header-subtitle">
-              ลัลล์ไม่ชอบไวน์ — Acompanhe todos os episódios oficiais e assista direto da plataforma.
+             Acompanhe todos os episódios oficiais e assista direto da plataforma.
             </p>
           </div>
 
@@ -279,8 +273,8 @@ function App() {
 
       {/* Footer */}
       <footer className="app-footer">
-        <p>© 2026 Enemies With Benefits Hub. Desenvolvido para fãs da GMMTV.</p>
-        <p className="footer-credits">Dados obtidos em tempo real via YouTube Data API v3.</p>
+        <p>© 2026 Enemies With Benefits Hub. Desenvolvido para fãs.</p>
+        <p className="footer-credits">Dados obtidos em tempo real via YouTube.</p>
       </footer>
 
       {/* Video Modal Player */}
